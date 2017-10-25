@@ -7,11 +7,12 @@ def get_ip_list(url, headers):
     ip_list = []
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.text, 'lxml')
-    ul_list = soup.find_all('ul', class_='l2')
+    ul_list = soup.find_all('tr', limit=20)
     print(len(ul_list))
-    for i in range(1, len(ul_list)):
-        ip = ul_list[i].find('li').text
-        port = ul_list[i].find_all('li')[1].text
+    for i in range(2, len(ul_list)):
+        line = ul_list[i].find_all('td')
+        ip = line[1].text
+        port = line[2].text
         address = ip + ':' + port
         ip_list.append(address)
     return ip_list
